@@ -5,6 +5,8 @@ import { movieRequests } from "../constants/requests";
 import useAppStateContext from "../hooks/useAppStateContext";
 import movieTrailer from "movie-trailer";
 import YouTube from "react-youtube";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const opts = {
   height: "400",
@@ -24,6 +26,7 @@ const Banner = ({selectedMovie}) => {
     overview: "",
   });
   const [trailerUrl, setTrailerUrl] = useState("");
+  const [loading, setLoading] = useState(!selectedMovie);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +46,8 @@ const Banner = ({selectedMovie}) => {
         );
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -75,31 +80,56 @@ const Banner = ({selectedMovie}) => {
       <header
         className="banner"
         style={{
-          backgroundImage: `url("${movie.backdrop_poster}")`,
+          backgroundImage: loading
+            ? "none"
+            : `url("${movie.backdrop_poster}")`,
+          backgroundColor: "#333",
           backgroundSize: "cover",
           backgroundPosition: "center center",
+          minHeight: "400px",
         }}
       >
         <div className="banner_contents">
-          <h1 className="banner_title">{movie.title}</h1>
+          <h1 className="banner_title">
+            {loading ? <Skeleton width={300} height={40} /> : movie.title}
+          </h1>
+
           <div className="banner_buttons">
-            <button
-              className="banner_button"
-              onClick={(event) => handlePlayClick(event)}
-            >
-              Play
-            </button>
-            <button className="banner_button">My List</button>
+            {loading ? (
+              <>
+                <Skeleton width={100} height={40} style={{ marginRight: '1rem' }} />
+                <Skeleton width={100} height={40} />
+              </>
+            ) : (
+              <>
+                <button
+                  className="banner_button"
+                  onClick={(event) => handlePlayClick(event)}
+                >
+                  Play
+                </button>
+                <button className="banner_button">My List</button>
+              </>
+            )}
+
             <span className="banner_release_date">
-              {movie.release_date
-                ? new Date(movie?.release_date).toISOString().split("T")[0]
-                : ""}
+              {loading ? (
+                <Skeleton width={100} />
+              ) : movie.release_date ? (
+                new Date(movie?.release_date).toISOString().split("T")[0]
+              ) : (
+                ""
+              )}
             </span>
+
             <p className="banner_description">
-              {truncate(movie.overview, 150)}
+              {loading ? (
+                <Skeleton count={3} width={`100%`} />
+              ) : (
+                truncate(movie.overview, 150)
+              )}
             </p>
           </div>
-          {/* <div className="fade"></div> */}
         </div>
       </header>
       {trailerUrl && <YouTube videoId={trailerUrl} opts={opts}/>}
