@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/movies-pwa/static/css/main.c41150ae.css",
+    "main.js": "/movies-pwa/static/js/main.72447700.js",
+    "static/js/453.7bf11acd.chunk.js": "/movies-pwa/static/js/453.7bf11acd.chunk.js",
+    "static/media/Login_Background.jpeg": "/movies-pwa/static/media/Login_Background.25a836bfde91a9eb9834.jpeg",
+    "index.html": "/movies-pwa/index.html",
+    "main.c41150ae.css.map": "/movies-pwa/static/css/main.c41150ae.css.map",
+    "main.72447700.js.map": "/movies-pwa/static/js/main.72447700.js.map",
+    "453.7bf11acd.chunk.js.map": "/movies-pwa/static/js/453.7bf11acd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c41150ae.css",
+    "static/js/main.72447700.js"
+  ]
+}
