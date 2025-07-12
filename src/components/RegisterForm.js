@@ -20,6 +20,33 @@ const RegisterForm = () => {
     setShowPass(!showPass)
   }
 
+  const handleRegister = async () => {
+    if (!user.email || !user.password || !user.city || !user.street) {
+      setMessage("Email, username, password are mandatory!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+      });
+      console.log(JSON.stringify(user))
+      const data = await response.json();
+      console.log(response)
+      if (response.ok) {
+        setMessage("¡Registro exitoso!");
+      } else {
+        setMessage(data.message || "Error en el registro");
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage("Error de red o del servidor");
+    }
+  };
 
   return (
     <React.Fragment>
@@ -32,6 +59,20 @@ const RegisterForm = () => {
             onChange={(e) => setUser({
               ...user,
               email: e.target.value
+            })}
+          >
+          </input>
+        </div>
+      </div>
+      <div className='inputs-container'>
+        <div className='input-container'>
+          <label className='email'>Username</label>
+          <input
+            type='text'
+            className='username'
+            onChange={(e) => setUser({
+              ...user,
+              username: e.target.value
             })}
           >
           </input>
@@ -68,7 +109,7 @@ const RegisterForm = () => {
           <input type="text" className='street'></input>
         </div>
       </div>
-      <button className='submit'>
+      <button className='submit' onClick={handleRegister}>
         submit
       </button>
       <span style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>

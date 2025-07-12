@@ -25,3 +25,14 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+const swPath = `${process.env.PUBLIC_URL}/serviceWorker.js`;
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(swPath)
+      .then((reg) => console.log("SW registered:", reg))
+      .catch((err) => console.error("SW registration failed:", err));
+  });
+}
